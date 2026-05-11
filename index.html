@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한빛+ 디지털 교재 교수 안내</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-toggle:checked~.faq-content {
+            max-height: 500px;
+        }
+
+        .faq-toggle:checked~label .icon-plus {
+            display: none;
+        }
+
+        .faq-toggle:checked~label .icon-minus {
+            display: block;
+        }
+
+        .icon-minus {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background-color: #ffffff;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .print-break-inside-avoid {
+                break-inside: avoid;
+            }
+
+            @page {
+                margin: 15mm;
+            }
+
+            .video-container {
+                display: none !important;
+            }
+
+            .print-video-alt {
+                display: block !important;
+                padding: 20px;
+                border: 1px solid #ccc;
+                text-align: center;
+                background: #f9f9f9;
+            }
+
+            /* 인쇄 시 Bento Grid 및 Dark 섹션 배경색 강제 적용 */
+            .bento-card,
+            .video-section {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                color: black !important;
+                background: #f1f5f9 !important;
+                border: 1px solid #e2e8f0;
+            }
+
+            .bento-card *,
+            .video-section * {
+                color: black !important;
+            }
+        }
+
+        .print-video-alt {
+            display: none;
+        }
+
+        /* 가로 스크롤바 숨기기 */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 부유 애니메이션 (Floating) */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        /* 프로필 이미지 비동기 부유 애니메이션 (회전각 및 Y축 정렬 유지) */
+        @keyframes float-p1 {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(-6deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-6deg);
+            }
+        }
+
+        @keyframes float-p2 {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(3deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(3deg);
+            }
+        }
+
+        @keyframes float-p3 {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(0deg);
+            }
+        }
+
+        @keyframes float-p4 {
+
+            0%,
+            100% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(calc(-50% - 12px)) rotate(0deg);
+            }
+        }
+
+        @keyframes float-p5 {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-3deg);
+            }
+        }
+
+        .animate-float-p1 {
+            animation: float-p1 4.5s ease-in-out infinite;
+        }
+
+        .animate-float-p2 {
+            animation: float-p2 5.5s ease-in-out infinite 0.5s;
+        }
+
+        .animate-float-p3 {
+            animation: float-p3 4s ease-in-out infinite 1.2s;
+        }
+
+        .animate-float-p4 {
+            animation: float-p4 6s ease-in-out infinite 0.2s;
+        }
+
+        .animate-float-p5 {
+            animation: float-p5 5s ease-in-out infinite 1.5s;
+        }
+
+        /* LED 박동 글로우 효과 */
+        @keyframes led-pulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                filter: blur(40px) scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                filter: blur(60px) scale(1.1);
+            }
+        }
+
+        .led-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(139, 92, 246, 0.4) 50%, transparent 70%);
+            z-index: -1;
+            animation: led-pulse 3s ease-in-out infinite;
+        }
+
+        /* ✨ 빛의 입자 흡수 애니메이션 ✨ */
+        @keyframes particle-flow {
+            0% {
+                transform: translate(0, 0) scale(0.2);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #ffffff;
+            border-radius: 50%;
+            /* 네온 효과를 위해 이중 그림자 적용 */
+            box-shadow: 0 0 10px 2px #3b82f6, 0 0 20px 4px #8b5cf6;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 5;
+        }
+
+        /* 모바일 환경 (세로 방향 폭포수 흐름 설정) */
+        .p-left-1 {
+            top: 100%;
+            left: 50%;
+            --tw-translate-x: 20px;
+            --tw-translate-y: 80px;
+            animation: particle-flow 2.8s linear infinite;
+            animation-delay: 0s;
+        }
+
+        .p-left-2 {
+            top: 95%;
+            left: 40%;
+            --tw-translate-x: -30px;
+            --tw-translate-y: 100px;
+            animation: particle-flow 3.2s linear infinite;
+            animation-delay: 0.7s;
+        }
+
+        .p-left-3 {
+            top: 98%;
+            left: 60%;
+            --tw-translate-x: 40px;
+            --tw-translate-y: 70px;
+            animation: particle-flow 2.5s linear infinite;
+            animation-delay: 1.4s;
+        }
+
+        .p-left-4 {
+            top: 90%;
+            left: 50%;
+            --tw-translate-x: -10px;
+            --tw-translate-y: 90px;
+            animation: particle-flow 3s linear infinite;
+            animation-delay: 2.1s;
+        }
+
+        .p-mid-1 {
+            top: 100%;
+            left: 50%;
+            --tw-translate-x: 30px;
+            --tw-translate-y: 70px;
+            animation: particle-flow 2.2s linear infinite;
+            animation-delay: 0.3s;
+        }
+
+        .p-mid-2 {
+            top: 95%;
+            left: 40%;
+            --tw-translate-x: -20px;
+            --tw-translate-y: 90px;
+            animation: particle-flow 2.6s linear infinite;
+            animation-delay: 1.1s;
+        }
+
+        .p-mid-3 {
+            top: 98%;
+            left: 60%;
+            --tw-translate-x: 40px;
+            --tw-translate-y: 60px;
+            animation: particle-flow 2.4s linear infinite;
+            animation-delay: 1.8s;
+        }
+
+        .p-mid-4 {
+            top: 90%;
+            left: 50%;
+            --tw-translate-x: -10px;
+            --tw-translate-y: 80px;
+            animation: particle-flow 2s linear infinite;
+            animation-delay: 2.5s;
+        }
+
+        /* PC 환경 (md 이상, 가로 방향 흐름 설정) */
+        @media (min-width: 768px) {
+            .p-left-1 {
+                top: 50%;
+                left: 100%;
+                --tw-translate-x: 230px;
+                --tw-translate-y: 20px;
+            }
+
+            .p-left-2 {
+                top: 33%;
+                left: 100%;
+                --tw-translate-x: 230px;
+                --tw-translate-y: -40px;
+            }
+
+            .p-left-3 {
+                top: 66%;
+                left: 100%;
+                --tw-translate-x: 230px;
+                --tw-translate-y: 60px;
+            }
+
+            .p-left-4 {
+                top: 45%;
+                left: 100%;
+                --tw-translate-x: 230px;
+                --tw-translate-y: -10px;
+            }
+
+            .p-mid-1 {
+                top: 50%;
+                left: 100%;
+                --tw-translate-x: 180px;
+                --tw-translate-y: 30px;
+            }
+
+            .p-mid-2 {
+                top: 25%;
+                left: 100%;
+                --tw-translate-x: 180px;
+                --tw-translate-y: -30px;
+            }
+
+            .p-mid-3 {
+                top: 75%;
+                left: 100%;
+                --tw-translate-x: 180px;
+                --tw-translate-y: 50px;
+            }
+
+            .p-mid-4 {
+                top: 40%;
+                left: 100%;
+                --tw-translate-x: 180px;
+                --tw-translate-y: -10px;
+            }
+        }
+
+        /* 자동 재생용 프로그레스 바 애니메이션 - 시간을 5초로 수정 */
+        @keyframes progress-run {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background-color: currentColor;
+            width: 0%;
+        }
+
+        .active .progress-bar-inner {
+            animation: progress-run 5s linear forwards;
+        }
+    </style>
+</head>
+
+<body class="antialiased break-keep">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="CI.png" alt="한빛+" class="h-8 w-auto mr-2">
+                    <span class="font-bold text-xl text-slate-800">디지털 교재</span>
+                </div>
+                <!-- PDF 다운로드 버튼 제거 -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- 도입부 (Hero Section - Relief 테마 완벽 적용) -->
+        <div
+            class="relative w-full overflow-hidden rounded-[2rem] mb-16 bg-white border border-slate-100 shadow-sm min-h-[500px] md:min-h-[550px] flex items-center">
+            <div
+                class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 md:translate-x-[15%] w-[800px] h-[800px] md:w-[1200px] md:h-[1200px] pointer-events-none flex items-center justify-center">
+                <div class="absolute w-full h-full rounded-full border border-slate-100 bg-slate-50/30"></div>
+                <div class="absolute w-[75%] h-[75%] rounded-full border border-blue-100/60 bg-[#f0f5fc]"></div>
+                <div
+                    class="absolute w-[50%] h-[50%] rounded-full border border-slate-200 bg-white shadow-[inset_0_0_50px_rgba(0,0,0,0.02)]">
+                </div>
+                <div class="absolute w-[25%] h-[25%] rounded-full border border-slate-100 bg-slate-50/50"></div>
+            </div>
+
+            <img src="여자1.png" alt="한국인 프로필"
+                class="animate-float-p1 absolute top-10 right-[35%] md:right-[40%] w-12 h-12 md:w-14 md:h-14 rounded-full border-4 border-white shadow-lg object-cover transform -rotate-6" />
+            <img src="남자1.png" alt="한국인 프로필"
+                class="animate-float-p2 absolute bottom-16 right-[45%] md:right-[50%] w-14 h-14 md:w-16 md:h-16 rounded-full border-[4px] border-white shadow-md object-cover transform rotate-3" />
+            <img src="여자2.png" alt="한국인 프로필"
+                class="animate-float-p3 absolute top-16 right-8 md:right-20 w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-white shadow-md object-cover" />
+            <img src="남자2.png" alt="한국인 프로필"
+                class="animate-float-p4 absolute top-1/2 -translate-y-1/2 right-[5%] md:right-[10%] w-16 h-16 md:w-20 md:h-20 rounded-full border-[5px] border-white shadow-xl object-cover" />
+            <img src="남자3.png" alt="한국인 프로필"
+                class="animate-float-p5 absolute bottom-12 right-12 md:right-24 w-14 h-14 md:w-16 md:h-16 rounded-full border-4 border-white shadow-lg object-cover transform -rotate-3" />
+
+            <div class="relative z-10 w-full md:w-[85%] lg:w-[80%] px-8 py-20 md:px-16 lg:px-24 md:py-32">
+                <h1
+                    class="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-slate-900 mb-8 tracking-tight leading-[1.7]">
+                    강의와 학습을<br />
+                    함께 바꾸는 <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">한빛+
+                        디지털 교재</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 leading-[2.2] max-w-3xl">
+                    전자책에 강의교안, 쉬운 해설, 해설 영상,<br />
+                    추가 연습문제, AI 튜터를 결합한 <strong class="text-slate-800 font-semibold">수업 지원형 교재</strong>입니다.<br />
+                    <!-- 모바일 최적화를 위해 inline-block을 block으로 변경하여 자동 줄바꿈 허용 -->
+                    <span class="block mt-3 w-full whitespace-normal font-medium text-slate-700">한빛아카데미 교재를 강의에 활용할 때
+                        학생의 예습과 복습, 개념 이해, 문제풀이까지 <strong class="text-blue-600 font-bold"><span class="whitespace-nowrap">하나의
+                                디지털 학습 환경에서</span> 자연스럽게 이어갈 수 있습니다.</strong></span>
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                    <a href="https://www.hanbit.co.kr/professor/digital-textbook-samples/9/1998165" target="_blank"
+                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/25 hover:bg-blue-700 transition-colors">
+                        <iconify-icon icon="lucide:play-circle" width="20"></iconify-icon> 디지털 교재 체험하기
+                    </a>
+                    <a href="#bento-section"
+                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-100 text-slate-800 font-bold border border-slate-200 hover:bg-white transition-colors">
+                        <iconify-icon icon="lucide:list-checks" width="20"></iconify-icon> 수업 활용 방식 보기
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 영상 섹션 -->
+        <section id="video-section"
+            class="video-section mb-16 rounded-[2rem] shadow-2xl border border-slate-800 p-8 md:p-12 scroll-mt-20 relative overflow-hidden bg-[#0f172a]">
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[80%] bg-gradient-to-b from-indigo-500/20 via-purple-500/10 to-transparent blur-[100px] pointer-events-none">
+            </div>
+            <div class="absolute bottom-0 right-0 w-[50%] h-[50%] bg-blue-500/10 blur-[80px] pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col items-center text-center mb-10">
+                <div
+                    class="inline-flex items-center justify-center p-3 bg-white/5 rounded-2xl border border-white/10 mb-4 backdrop-blur-sm shadow-inner">
+                    <iconify-icon icon="lucide:monitor-play" class="text-indigo-400" width="32"></iconify-icon>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
+                    1분 만에 보는 디지털 교재 시연
+                </h2>
+                <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                    수업에서 어떻게 활용할 수 있는지 영상으로 먼저 확인해 보세요.
+                </p>
+            </div>
+
+            <div
+                class="video-container relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.25)] border border-white/10 relative z-10 ring-1 ring-white/10">
+                <iframe src="https://player.vimeo.com/video/1173173902?title=0&byline=0&portrait=0"
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="print-video-alt rounded-lg relative z-10 mt-4 border-slate-700 bg-slate-800 text-slate-300">
+                <p class="font-bold text-white">[온라인 시연 영상]</p>
+                <p class="text-sm">PDF 문서에서는 영상을 재생할 수 없습니다. 온라인 링크(https://vimeo.com/1173173902)에서 확인해 주세요.</p>
+            </div>
+        </section>
+
+        <!-- 개념 소개 섹션 -->
+        <section id="concept-section"
+            class="mb-16 py-20 px-6 md:px-12 rounded-[2rem] bg-gradient-to-b from-white to-blue-50/40 border border-slate-100 flex flex-col items-center scroll-mt-20 overflow-hidden">
+            <div class="max-w-4xl text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
+                    전자책과 부가서비스의 경계를 허문,<br />
+                    <span class="text-blue-600">단 하나의 통합 뷰어</span>
+                </h2>
+                <p class="text-lg md:text-xl text-slate-600 leading-[1.8] max-w-3xl mx-auto font-medium break-keep">
+                    여러 서비스를 따로 열 필요 없습니다. 본문 읽기부터 강의교안, 쉬운 해설, 해설 영상, 추가 연습문제, AI 튜터까지<br class="hidden md:block" />
+                    교수와 학생 모두에게 필요한 자료가 하나의 디지털 학습 환경 안에서 <strong class="text-slate-800">끊김 없이 연결됩니다.</strong>
+                </p>
+            </div>
+
+            <div
+                class="relative w-full max-w-6xl h-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4 lg:gap-12">
+                <div class="relative flex flex-col items-center gap-6 group">
+                    <div class="particle p-left-1"></div>
+                    <div class="particle p-left-2"></div>
+                    <div class="particle p-left-3"></div>
+                    <div class="particle p-left-4"></div>
+                    <div
+                        class="relative w-36 h-48 bg-slate-100 rounded-xl shadow-[10px_20px_40px_rgba(0,0,0,0.1)] border border-white flex flex-col overflow-hidden transform group-hover:rotate-2 transition-transform">
+                        <div class="absolute inset-0 border-[6px] border-slate-800 rounded-xl z-10"></div>
+                        <div class="h-full w-full bg-white p-4 pt-8 flex flex-col gap-2">
+                            <div class="w-full h-1 bg-slate-100 rounded"></div>
+                            <div class="w-4/5 h-1 bg-slate-100 rounded"></div>
+                            <div
+                                class="w-full h-1 bg-slate-100 rounded text-[8px] flex items-center justify-center text-slate-200 mt-4">
+                                <iconify-icon icon="lucide:book-open"></iconify-icon>
+                            </div>
+                            <div class="w-full h-1 bg-slate-100 rounded"></div>
+                        </div>
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
+                            <span class="font-black text-[10px] text-slate-400 tracking-[0.2em]">E-BOOK</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-bold text-slate-900 text-2xl mb-1">기존 전자책</p>
+                        <p class="text-lg text-slate-500 font-medium tracking-tight">본문 텍스트 중심</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center z-10">
+                    <div
+                        class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg shadow-blue-200">
+                        <iconify-icon icon="lucide:plus" width="24" class="font-bold"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col items-center gap-6">
+                    <div class="particle p-mid-1"></div>
+                    <div class="particle p-mid-2"></div>
+                    <div class="particle p-mid-3"></div>
+                    <div class="particle p-mid-4"></div>
+                    <div class="relative w-48 h-48 flex items-center justify-center">
+                        <div class="absolute w-36 h-36 bg-blue-100/40 rounded-full blur-3xl"></div>
+                        <div
+                            class="absolute top-0 left-0 bg-purple-100 text-purple-600 p-3 rounded-2xl shadow-lg border border-purple-200">
+                            <iconify-icon icon="lucide:bot" width="24"></iconify-icon>
+                        </div>
+                        <div
+                            class="absolute top-2 right-0 bg-rose-100 text-rose-600 p-3 rounded-2xl shadow-lg border border-rose-200">
+                            <iconify-icon icon="lucide:play-circle" width="24"></iconify-icon>
+                        </div>
+                        <div
+                            class="absolute bottom-6 left-0 bg-amber-100 text-amber-600 p-3 rounded-2xl shadow-lg border border-amber-200">
+                            <iconify-icon icon="lucide:pencil-line" width="24"></iconify-icon>
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-2 bg-emerald-100 text-emerald-600 p-3 rounded-2xl shadow-lg border border-emerald-200">
+                            <iconify-icon icon="lucide:message-square-text" width="24"></iconify-icon>
+                        </div>
+                        <div class="bg-blue-50 text-blue-500 p-3 rounded-2xl shadow-lg border border-blue-100">
+                            <iconify-icon icon="lucide:presentation" width="24"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-bold text-slate-900 text-2xl mb-1">강력한 부가서비스</p>
+                        <p class="text-lg text-slate-500 font-medium tracking-tight">교안·해설·영상·문제·AI튜터</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center z-10">
+                    <div class="text-blue-200">
+                        <iconify-icon icon="lucide:chevrons-right" width="40"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col items-center gap-6 group animate-float">
+                    <div class="led-glow"></div>
+                    <div
+                        class="relative w-72 h-52 bg-slate-900 rounded-[2.5rem] border-[6px] border-slate-800 shadow-[20px_40px_60px_rgba(0,0,0,0.3)] p-4 flex flex-col gap-2 overflow-hidden ring-1 ring-white/20 transition-all duration-500 group-hover:scale-105 group-hover:shadow-blue-500/20">
+                        <div class="flex gap-2 h-full">
+                            <div class="w-1/2 bg-white/10 rounded-xl"></div>
+                            <div class="w-1/2 flex flex-col gap-2">
+                                <div class="h-1/3 bg-blue-500/30 rounded-xl"></div>
+                                <div class="h-2/3 bg-purple-500/30 rounded-xl"></div>
+                            </div>
+                        </div>
+                        <!-- 태블릿 화면 로고 배지 -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div
+                                class="bg-white/95 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-blue-50 transform hover:scale-105 transition-transform">
+                                <img src="CI.png" class="h-6 w-auto" alt="CI"
+                                    onerror="this.src='https://via.placeholder.com/60x24?text=CI'">
+                                <span class="text-lg font-extrabold text-blue-600 tracking-tight">통합형 교재</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center relative">
+                        <p class="font-bold text-blue-600 text-2xl mb-1 tracking-tight">한빛+ 디지털 교재</p>
+                        <p class="text-lg text-slate-500 font-bold tracking-tight">올인원 학습 솔루션</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENTO GRID 섹션 -->
+        <section id="bento-section" class="mb-20 scroll-mt-20 print-break-inside-avoid">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                    <iconify-icon icon="lucide:blocks" width="24"></iconify-icon>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">디지털 교재, 무엇이 특별한가요?</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto">
+                <!-- 1. 올인원 학습 솔루션 (시각화 최적화 및 자동 순환 기능) -->
+                <div
+                    class="bento-card md:col-span-3 rounded-[2rem] p-6 md:p-10 lg:p-12 bg-[#f8faff] border border-blue-100/50 shadow-lg relative overflow-hidden flex flex-col items-center">
+                    <div
+                        class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-b from-blue-50/80 to-transparent pointer-events-none">
+                    </div>
+
+                    <div class="relative z-10 w-full flex flex-col items-center text-center mb-10">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold mb-4 shadow-sm">
+                            <iconify-icon icon="lucide:sparkles"></iconify-icon> 주요 기능 상세 보기
+                        </div>
+                        <h3 class="text-3xl md:text-4xl font-bold mb-4 leading-tight tracking-tight text-slate-900">
+                            강의와 복습을 돕는 5대 부가서비스
+                        </h3>
+                        <p class="text-slate-600 text-base">기능을 선택하거나 잠시 기다리면 화면이 자동으로 전환됩니다.</p>
+                    </div>
+
+                    <!-- 상단 가로 탭 (최적화 레이아웃) -->
+                    <div class="relative z-10 w-full max-w-5xl mx-auto mb-10">
+                        <div
+                            class="flex overflow-x-auto gap-4 pb-6 snap-x hide-scrollbar justify-start md:justify-center items-center px-16">
+
+                            <!-- 탭 1 -->
+                            <button onclick="changeFeature(0, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-white overflow-hidden active shadow-lg scale-[1.03] border-blue-200"
+                                id="tab-0">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-blue-100 text-blue-600">
+                                        <iconify-icon icon="lucide:presentation" width="22"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-800">
+                                        강의교안</div>
+                                </div>
+                                <div class="w-full h-1 bg-blue-50 overflow-hidden text-blue-600">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                            <!-- 탭 2 -->
+                            <button onclick="changeFeature(1, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#ecfdf5]/40 hover:bg-[#ecfdf5] border-transparent"
+                                id="tab-1">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-emerald-50 text-emerald-500">
+                                        <iconify-icon icon="lucide:message-square-text" width="22"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-500">쉬운
+                                        해설</div>
+                                </div>
+                                <div class="w-full h-1 bg-emerald-50 overflow-hidden text-emerald-500">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                            <!-- 탭 3 -->
+                            <button onclick="changeFeature(2, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#fff1f2]/40 hover:bg-[#fff1f2] border-transparent"
+                                id="tab-2">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-rose-50 text-rose-500">
+                                        <iconify-icon icon="lucide:play-circle" width="22"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-500">해설
+                                        영상</div>
+                                </div>
+                                <div class="w-full h-1 bg-rose-50 overflow-hidden text-rose-500">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                            <!-- 탭 4 -->
+                            <button onclick="changeFeature(3, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#fffbeb]/40 hover:bg-[#fffbeb] border-transparent"
+                                id="tab-3">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-amber-50 text-amber-500">
+                                        <iconify-icon icon="lucide:pencil-line" width="22"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-500">추가
+                                        연습문제</div>
+                                </div>
+                                <div class="w-full h-1 bg-amber-50 overflow-hidden text-amber-500">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                            <!-- 탭 5 -->
+                            <button onclick="changeFeature(4, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#f5f3ff]/40 hover:bg-[#f5f3ff] border-transparent"
+                                id="tab-4">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-purple-50 text-purple-500">
+                                        <iconify-icon icon="lucide:bot" width="24"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-500">AI
+                                        튜터</div>
+                                </div>
+                                <div class="w-full h-1 bg-purple-50 overflow-hidden text-purple-500">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- 하단 풀스크린 캡처 -->
+                    <div class="relative z-10 w-full flex flex-col items-center">
+                        <div
+                            class="bg-white/80 backdrop-blur-md px-6 py-2 rounded-full border border-white mb-6 shadow-sm">
+                            <p id="feature-desc-text"
+                                class="text-slate-800 text-lg md:text-xl transition-opacity duration-300 text-center">
+                                <!-- JS에서 동적으로 채워집니다 -->
+                            </p>
+                        </div>
+                        <div
+                            class="w-full relative flex justify-center items-center rounded-2xl md:rounded-[2rem] p-2 md:p-6 bg-slate-200/40 border border-slate-200/60 shadow-inner overflow-hidden">
+                            <div
+                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-white/40 rounded-2xl md:rounded-[2rem] blur-xl pointer-events-none">
+                            </div>
+                            <img id="feature-showcase-img" src="강의교안.png" alt="기능 상세 화면"
+                                class="relative z-10 w-full h-auto max-h-[70vh] object-contain rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transition-opacity duration-300 ease-in-out border border-slate-200/50 bg-white"
+                                onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x800.png?text=Image+Not+Found';">
+                        </div>
+                        <div
+                            class="mt-6 w-full max-w-4xl mx-auto bg-amber-50 rounded-xl p-4 border border-amber-200 flex items-start gap-3 text-left shadow-sm">
+                            <div class="text-amber-500 mt-0.5 shrink-0">
+                                <iconify-icon icon="lucide:info" width="20"></iconify-icon>
+                            </div>
+                            <p class="text-base text-slate-800 leading-relaxed break-keep">
+                                소개된 부가서비스의 세부 기능과 화면은 정식 오픈 전까지 <strong
+                                    class="font-extrabold text-slate-900">일부 변경되거나 계속 개선될 수 있습니다.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2 & 3. 강의 활용 흐름 (통합 인포그래픽) -->
+                <div
+                    class="bento-card md:col-span-3 rounded-[2rem] p-8 md:p-10 lg:p-12 bg-white border border-slate-200 shadow-lg relative overflow-hidden flex flex-col">
+
+                    <div class="mb-10 text-center md:text-left">
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">강의 채택 시 이렇게 활용됩니다
+                        </h3>
+                        <p class="text-slate-700 font-bold text-base md:text-lg">샘플 확인부터 학생 안내와 수업 활용까지,
+                            강의 운영 흐름에 맞춰 검토하실 수 있습니다.</p>
+                    </div>
+
+                    <!-- 가로형 타임라인 (인포그래픽) -->
+                    <div class="relative w-full max-w-5xl mx-auto mt-2 mb-10 px-2 md:px-0">
+                        <!-- 배경 선 (데스크톱) -->
+                        <div
+                            class="hidden md:block absolute top-[28px] left-[12%] right-[12%] h-1 bg-slate-100 rounded-full z-0">
+                        </div>
+                        <!-- 배경 선 (모바일) -->
+                        <div
+                            class="md:hidden absolute top-[28px] bottom-[28px] left-[28px] w-1 bg-slate-100 rounded-full z-0">
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-10 md:gap-4 justify-between relative z-10">
+
+                            <!-- Step 1 -->
+                            <div
+                                class="flex flex-row md:flex-col items-start md:items-center md:w-1/4 gap-5 md:gap-4 group">
+                                <div
+                                    class="w-14 h-14 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center border-[6px] border-white shadow-sm shrink-0 transition-transform group-hover:scale-110 z-10">
+                                    <iconify-icon icon="lucide:check" width="24"></iconify-icon>
+                                </div>
+                                <div class="flex flex-col items-start md:items-center mt-1 md:mt-0">
+                                    <h4 class="font-bold text-slate-700 text-lg mb-1 md:mt-[28px]">1. 디지털 교재 확인</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">전자책과
+                                        부가서비스 구성<br class="hidden md:block" />샘플로 먼저 확인</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div
+                                class="flex flex-row md:flex-col items-start md:items-center md:w-1/4 gap-5 md:gap-4 group">
+                                <div
+                                    class="w-14 h-14 rounded-full bg-gradient-to-r from-[#f43f5e] to-[#8b5cf6] text-white flex items-center justify-center border-[6px] border-white shadow-md shrink-0 relative transition-transform group-hover:scale-110 z-10">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-40"></span>
+                                    <iconify-icon icon="lucide:loader-2" class="animate-spin" width="24"></iconify-icon>
+                                </div>
+                                <div class="flex flex-col items-start md:items-center mt-1 md:mt-0">
+                                    <div
+                                        class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-2.5 py-0.5 rounded-full text-[11px] font-bold mb-2 md:mx-auto">
+                                        <span class="relative flex h-2 w-2">
+                                            <span
+                                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75"></span>
+                                            <span
+                                                class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                                        </span>
+                                        검토 단계
+                                    </div>
+                                    <h4 class="font-bold text-purple-700 text-lg mb-1">2. 강의 활용 방식 검토</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">수업 전후
+                                        예습·복습 자료<br class="hidden md:block" />활용 범위 확인</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div
+                                class="flex flex-row md:flex-col items-start md:items-center md:w-1/4 gap-5 md:gap-4 group">
+                                <div
+                                    class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center border-[6px] border-white shadow-sm shrink-0 transition-transform group-hover:scale-110 z-10">
+                                    <iconify-icon icon="lucide:clipboard-check" width="24"></iconify-icon>
+                                </div>
+                                <div class="flex flex-col items-start md:items-center mt-1 md:mt-0">
+                                    <div
+                                        class="inline-flex items-center gap-1 bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold mb-2 md:mx-auto">
+                                        <iconify-icon icon="lucide:sparkles"></iconify-icon> Next Step
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 text-lg mb-1">3. 학생 대상 이용 안내</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">한빛+ 이용 방법과<br
+                                            class="hidden md:block" />학습 자료 접근 안내</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div
+                                class="flex flex-row md:flex-col items-start md:items-center md:w-1/4 gap-5 md:gap-4 group">
+                                <div
+                                    class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center border-[6px] border-white shadow-sm shrink-0 transition-transform group-hover:scale-110 z-10">
+                                    <iconify-icon icon="lucide:flag" width="24"></iconify-icon>
+                                </div>
+                                <div class="flex flex-col items-start md:items-center mt-1 md:mt-0 w-full">
+                                    <h4 class="font-bold text-blue-700 text-lg mb-1 md:mt-[28px]">4. 수업 중 활용 및 피드백</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">강의 운영에 맞춰<br
+                                            class="hidden md:block" />학습 자료 활용과 피드백 확인</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 강의 활용 문의 메시지 박스 -->
+                    <div
+                        class="bg-[#eef2ff] rounded-2xl p-6 md:p-8 border border-indigo-100 w-full flex flex-col md:flex-row items-start md:items-center gap-6 mt-4">
+                        <div class="p-4 bg-white rounded-2xl shadow-sm text-indigo-600 shrink-0">
+                            <iconify-icon icon="lucide:clipboard-list" width="36"></iconify-icon>
+                        </div>
+                        <div class="flex-1 min-w-0 w-full">
+                            <h4 class="text-lg md:text-xl font-bold text-slate-800 mb-2">강의 운영 방식에 맞춰 검토하실 수 있습니다</h4>
+                            <p class="text-slate-700 font-bold text-sm md:text-base leading-relaxed break-words">
+                                샘플 교재를 확인하신 뒤 강의 채택 가능성, 학생 이용 안내, 수업 중 활용 방식이 궁금하시면 <strong
+                                    class="text-slate-900 font-extrabold underline decoration-indigo-300 underline-offset-4">디지털
+                                    콘텐츠팀(<a href="mailto:aca_dc_conversion_tf@hanbit.co.kr"
+                                        class="hover:text-indigo-600 transition-colors break-all">aca_dc_conversion_tf@hanbit.co.kr</a>)</strong>으로
+                                문의해 주세요. 과목과 강의 운영 방식에 맞춰 안내해 드리겠습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 교수와 학생을 위한 장점 -->
+                <div
+                    class="bento-card md:col-span-3 rounded-[2rem] p-8 bg-[#0f172a] text-white shadow-lg relative overflow-hidden flex flex-col justify-center">
+                    <div class="md:w-3/4 relative z-10">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-3">교수님께는 더 편한 강의 준비를, 학생에게는 더 깊은 학습 경험을</h3>
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                            강의 자료와 학습 자료를 하나의 흐름으로 안내할 수 있습니다. 학생은 수업 전후에 필요한 자료를 스스로 확인하고,
+                            어려운 개념은 쉬운 해설과 해설 영상으로 반복 학습할 수 있습니다. 추가 연습문제는 수업 후 이해도 점검을 돕고,
+                            디지털 환경에 익숙한 학생들에게 더 자연스러운 학습 경험을 제공합니다.
+                        </p>
+                    </div>
+                    <iconify-icon icon="lucide:graduation-cap"
+                        class="absolute -right-6 top-1/2 -translate-y-1/2 text-slate-800" width="180"></iconify-icon>
+                </div>
+
+                <!-- 5. 수업 지원 포인트 -->
+                <div
+                    class="bento-card md:col-span-3 rounded-[2rem] p-8 md:p-10 bg-gradient-to-br from-[#60a5fa] to-[#3b82f6] text-white flex flex-col md:flex-row items-center justify-between shadow-lg gap-8 relative overflow-hidden">
+                    <iconify-icon icon="lucide:book-open-check" class="absolute -left-10 -bottom-10 text-white/10 rotate-12"
+                        width="200"></iconify-icon>
+                    <div class="relative z-10 md:w-1/2">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-3">종이책 중심 수업을 보완하는 디지털 학습 지원 도구</h3>
+                        <p class="text-blue-50 text-base md:text-lg leading-relaxed">교재 본문은 유지하면서 학생의 예습, 복습, 질문, 문제풀이를
+                            디지털 자료로 함께 안내할 수 있습니다.</p>
+                    </div>
+                    <div
+                        class="relative z-10 md:w-1/3 w-full space-y-4 bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
+                        <div class="flex items-center justify-between text-base font-medium">
+                            <span class="flex items-center gap-2"><iconify-icon icon="lucide:presentation"></iconify-icon>
+                                강의 자료</span>
+                            <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-bold shadow-sm">출판사
+                                제공</span>
+                        </div>
+                        <div class="border-t border-white/20 my-2"></div>
+                        <div class="flex items-center justify-between text-base font-medium">
+                            <span class="flex items-center gap-2"><iconify-icon icon="lucide:bot"></iconify-icon> 학생
+                                학습 지원</span>
+                            <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-bold shadow-sm">한빛+
+                                제공</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 마이한빛 확인 안내 -->
+                <div
+                    class="bento-card md:col-span-3 rounded-[2rem] p-8 md:p-10 lg:p-12 bg-white border border-slate-200 shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="relative z-10 w-full md:w-[55%]">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4 text-slate-900 tracking-tight">디지털 교재, 직접 체험해 보세요
+                        </h3>
+                        <p class="text-slate-600 text-base md:text-lg leading-relaxed break-keep">
+                            부가서비스가 실제로 어떻게 동작하는지 확인하실 수 있도록 <strong class="text-slate-800">샘플 교재(1종)</strong>를
+                            준비했습니다. 아래 버튼을 눌러 <span class="whitespace-nowrap">한빛+에</span> 로그인하시면 수업 활용 가능성을 직접 살펴보실 수 있습니다.
+                        </p>
+
+                        <a href="https://www.hanbit.co.kr/professor/digital-textbook-samples/9/1998165" target="_blank"
+                            class="inline-flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3.5 my-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-lg rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-1">
+                            <iconify-icon icon="lucide:gift" width="22"></iconify-icon> 샘플 교재 체험하기
+                        </a>
+
+                        <p class="text-slate-600 text-base leading-relaxed break-keep">
+                            등록이 완료되면 우측 상단의 <strong
+                                class="text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">마이한빛</strong>
+                            메뉴에서 샘플 교재와 새로운 학습 환경을 확인하실 수 있습니다.
+                        </p>
+
+                        <div
+                            class="mt-5 p-4 bg-slate-50/80 rounded-xl border border-slate-100 text-sm text-slate-600 leading-relaxed break-keep">
+                            <strong class="text-blue-600 mr-1">※</strong> 한빛+ 회원이 아니시거나 마이한빛에서 샘플 교재가 보이지 않는 경우, 가입하신
+                            아이디를 디지털 콘텐츠팀(<a href="mailto:aca_dc_conversion_tf@hanbit.co.kr"
+                                class="text-blue-600 hover:underline">aca_dc_conversion_tf@hanbit.co.kr</a>)으로 보내주세요.
+                            확인 후 체험 방법을 안내해 드리겠습니다.
+                        </div>
+                    </div>
+                    <div class="relative z-10 w-full md:w-[45%] flex justify-center md:justify-end mt-4 md:mt-0">
+                        <div
+                            class="rounded-2xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.05)] bg-slate-50/50 p-2 md:p-3 w-full max-w-[400px]">
+                            <div class="overflow-hidden rounded-xl border border-slate-200/50 cursor-zoom-in group">
+                                <img src="myhanbit.png" alt="마이한빛 메뉴 위치 안내"
+                                    class="w-full h-auto object-contain transform origin-top-right transition-transform duration-500 ease-out group-hover:scale-[2]"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=myhanbit.png';">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FAQ 섹션 -->
+        <section class="mb-16 print-break-inside-avoid scroll-mt-20">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2 bg-slate-100 text-slate-600 rounded-lg">
+                    <iconify-icon icon="lucide:message-circle-question" width="24"></iconify-icon>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">자주 묻는 질문</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq1" class="faq-toggle hidden">
+                    <label for="faq1"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q1</span>
+                            디지털 교재는 기존 전자책과 무엇이 다른가요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            기존 전자책에 강의교안, 쉬운 해설, 해설 영상, 추가 연습문제, AI 튜터 등 수업과 학습을 지원하는 부가서비스를 결합한 형태입니다.
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq2" class="faq-toggle hidden">
+                    <label for="faq2"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q2</span>
+                            강의에서 어떻게 활용할 수 있나요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            수업 교재로 활용하면서 학생들에게 예습, 복습, 문제풀이, 개념 이해를 위한 디지털 학습 자료를 함께 안내할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq3" class="faq-toggle hidden">
+                    <label for="faq3"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q3</span>
+                            학생들은 어떤 부가서비스를 이용할 수 있나요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            교재별 제공 범위에 따라 강의교안, 쉬운 해설, 해설 영상, 추가 연습문제, AI 튜터 등을 이용할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq4" class="faq-toggle hidden">
+                    <label for="faq4"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q4</span>
+                            종이책을 대체하는 서비스인가요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            종이책을 완전히 대체하기보다는, 수업과 학습을 보완하는 디지털 교재 서비스로 이해하시면 됩니다. 강의 운영 방식에 따라 종이책과 함께 활용할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 강의 채택 문의 FAQ -->
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq5" class="faq-toggle hidden">
+                    <label for="faq5"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q5</span>
+                            수업에 채택하려면 어떻게 문의하면 되나요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            한빛아카데미 디지털콘텐츠팀 또는 담당 영업자를 통해 샘플 확인, 강의 활용 방식, 학생 이용 안내 등을 상담하실 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 한빛+ 체험 FAQ -->
+                <div
+                    class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                    <input type="checkbox" id="faq6" class="faq-toggle hidden">
+                    <label for="faq6"
+                        class="flex justify-between items-center p-6 cursor-pointer bg-white transition-colors">
+                        <span class="font-bold text-slate-800 flex items-center gap-3">
+                            <span
+                                class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">Q6</span>
+                            한빛+ 회원이 아니어도 체험할 수 있나요?
+                        </span>
+                        <div class="bg-slate-50 p-2 rounded-full">
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="icon-plus text-slate-500 transition-transform"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-up"
+                                class="icon-minus text-slate-500 transition-transform"></iconify-icon>
+                        </div>
+                    </label>
+                    <div class="faq-content bg-slate-50">
+                        <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
+                            샘플 교재 체험 또는 안내를 위해 필요한 경우 한빛+ 회원 가입이 필요할 수 있습니다. 자세한 이용 방식은 문의 후 안내드릴 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white py-12 mt-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex justify-center mb-6">
+                <img src="CI.png" alt="한빛+" class="h-8 opacity-80 brightness-0 invert"
+                    onerror="this.src='https://via.placeholder.com/120x40?text=CI+LOGO'">
+            </div>
+            <h3 class="text-lg font-bold mb-3 text-slate-200">한빛아카데미 디지털콘텐츠팀</h3>
+            <p class="text-slate-400 text-sm mb-2">강의 채택 검토나 샘플 체험이 필요하시면 문의해 주세요. 자세히 안내해 드리겠습니다.</p>
+            <p class="text-slate-500 text-sm mb-8">aca_dc_conversion_tf@hanbit.co.kr</p>
+            <div class="border-t border-slate-700 pt-8">
+                <p class="text-slate-500 text-xs">© Hanbit Academy, Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const featuresData = [
+            {
+                img: '강의교안.png',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-blue-50/40',
+                activeBorder: 'border-blue-200',
+                iconBgActive: 'bg-blue-100 text-blue-600',
+                iconBgInactive: 'bg-blue-100/50 text-blue-400',
+                desc: '교수님의 <span class="text-blue-600 font-bold px-1 rounded bg-blue-50">수업 준비와 강의 진행을 돕는 자료</span>를 함께 제공합니다.'
+            },
+            {
+                img: '쉬운해설.png',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-[#ecfdf5]/40',
+                activeBorder: 'border-emerald-200',
+                iconBgActive: 'bg-emerald-100 text-emerald-600',
+                iconBgInactive: 'bg-emerald-100/50 text-emerald-400',
+                desc: '학생이 어려운 개념을 스스로 이해할 수 있도록 <span class="text-emerald-600 font-bold px-1 rounded bg-emerald-50">본문을 쉽게 풀어 설명</span>합니다.'
+            },
+            {
+                img: '해설영상.png',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-[#fff1f2]/40',
+                activeBorder: 'border-rose-200',
+                iconBgActive: 'bg-rose-100 text-rose-600',
+                iconBgInactive: 'bg-rose-100/50 text-rose-400',
+                desc: '수업 전후 예습과 복습에 활용할 수 있는 <span class="text-rose-600 font-bold px-1 rounded bg-rose-50">해설 영상 자료</span>를 제공합니다.'
+            },
+            {
+                img: '추가연습문제.png',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-[#fffbeb]/40',
+                activeBorder: 'border-amber-200',
+                iconBgActive: 'bg-amber-100 text-amber-600',
+                iconBgInactive: 'bg-amber-100/50 text-amber-400',
+                desc: '학생의 반복 학습과 이해도 점검을 돕는 <span class="text-amber-600 font-bold px-1 rounded bg-amber-50">추가 문제 자료</span>를 제공합니다.'
+            },
+            {
+                img: 'AI튜터.png',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-[#f5f3ff]/40',
+                activeBorder: 'border-purple-200',
+                iconBgActive: 'bg-purple-100 text-purple-600',
+                iconBgInactive: 'bg-purple-100/50 text-purple-400',
+                desc: '학생이 학습 중 궁금한 내용을 질문하고 도움을 받을 수 있는 <span class="text-purple-600 font-bold px-1 rounded bg-purple-50">학습 지원 기능</span>입니다.'
+            }
+        ];
+
+        let currentFeatureIndex = 0;
+        let autoPlayInterval;
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            autoPlayInterval = setInterval(() => {
+                currentFeatureIndex = (currentFeatureIndex + 1) % featuresData.length;
+                changeFeature(currentFeatureIndex, false);
+            }, 5000); // 5초 간격
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+        }
+
+        function changeFeature(index, isManual) {
+            currentFeatureIndex = index;
+
+            const imgEl = document.getElementById('feature-showcase-img');
+            const descEl = document.getElementById('feature-desc-text');
+
+            imgEl.style.opacity = '0';
+            descEl.style.opacity = '0';
+
+            setTimeout(() => {
+                imgEl.src = featuresData[index].img;
+                descEl.innerHTML = featuresData[index].desc;
+                imgEl.style.opacity = '1';
+                descEl.style.opacity = '1';
+            }, 200);
+
+            const tabs = document.querySelectorAll('.feature-tab');
+            tabs.forEach((tab, i) => {
+                const iconBg = tab.querySelector('.feature-icon-bg');
+                const titleText = tab.querySelector('.feature-title');
+
+                tab.className = 'feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer';
+
+                if (i === index) {
+                    tab.classList.add('bg-white', 'shadow-lg', 'scale-[1.03]', 'active', featuresData[i].activeBorder);
+                    iconBg.className = `feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 ${featuresData[i].iconBgActive}`;
+                    titleText.classList.remove('text-slate-500');
+                    titleText.classList.add('text-slate-800');
+                } else {
+                    tab.classList.add(featuresData[i].inactiveBg, 'border-transparent', 'hover:bg-white/80');
+                    iconBg.className = `feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 ${featuresData[i].iconBgInactive}`;
+                    titleText.classList.remove('text-slate-800');
+                    titleText.classList.add('text-slate-500');
+                }
+            });
+
+            if (isManual) {
+                startAutoPlay();
+            }
+        }
+
+        window.onload = () => {
+            changeFeature(0, false);
+            startAutoPlay();
+        };
+    </script>
+</body>
+
+</html>
