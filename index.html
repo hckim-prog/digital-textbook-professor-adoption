@@ -783,11 +783,11 @@
                 <div
                     class="bento-card md:col-span-3 rounded-[2rem] p-8 md:p-10 lg:p-12 bg-white border border-slate-200 shadow-lg relative overflow-hidden flex flex-col">
 
-                    <div class="mb-10 text-center md:text-left">
+                    <div class="mb-12 text-center md:text-left max-w-3xl">
                         <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">강의 채택 후 운영 흐름
                         </h3>
-                        <p class="text-slate-700 font-bold text-base md:text-lg">채택 강좌별 전용 구매 링크와 쿠폰코드를 제공해,
-                            학생이 부가서비스 포함 디지털교재를 합리적인 가격으로 이용하도록 안내합니다.</p>
+                        <p class="text-slate-700 font-bold text-base md:text-lg leading-relaxed">교수님께 구매 전용 링크와 쿠폰코드를 제공하고,
+                            학생은 할인 구매 후 부가서비스 포함 디지털교재를 이용합니다.</p>
                     </div>
 
                     <!-- 가로형 타임라인 (인포그래픽) -->
@@ -801,7 +801,7 @@
                             class="md:hidden absolute top-[28px] bottom-[28px] left-[28px] w-1 bg-slate-100 rounded-full z-0">
                         </div>
 
-                        <div class="flex flex-col md:flex-row gap-10 md:gap-4 justify-between relative z-10">
+                        <div class="flex flex-col md:flex-row gap-8 md:gap-5 justify-between relative z-10">
 
                             <!-- Step 1 -->
                             <div
@@ -811,9 +811,9 @@
                                     <iconify-icon icon="lucide:check" width="24"></iconify-icon>
                                 </div>
                                 <div class="flex flex-col items-start md:items-center mt-1 md:mt-6">
-                                    <h4 class="font-bold text-slate-800 text-lg mb-1">1. 디지털 교재 확인</h4>
-                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">전자책과
-                                        부가서비스<br class="hidden md:block" />구성 먼저 살펴보기</p>
+                                    <h4 class="font-bold text-slate-800 text-base lg:text-lg mb-1">1. 디지털 교재 확인</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep leading-relaxed">전자책과
+                                        부가서비스<br class="hidden md:block" />구성 확인</p>
                                 </div>
                             </div>
 
@@ -825,9 +825,9 @@
                                     <iconify-icon icon="lucide:ticket" width="24"></iconify-icon>
                                 </div>
                                 <div class="flex flex-col items-start md:items-center mt-1 md:mt-6">
-                                    <h4 class="font-bold text-slate-800 text-lg mb-1">2. 전용 링크·쿠폰 제공</h4>
-                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">교수님께
-                                        구매 전용 링크와<br class="hidden md:block" />쿠폰코드 제공</p>
+                                    <h4 class="font-bold text-slate-800 text-base lg:text-lg mb-1">2. 링크·쿠폰 제공</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep leading-relaxed">교수님께
+                                        구매 링크와<br class="hidden md:block" />쿠폰코드 제공</p>
                                 </div>
                             </div>
 
@@ -839,8 +839,8 @@
                                     <iconify-icon icon="lucide:clipboard-check" width="24"></iconify-icon>
                                 </div>
                                 <div class="flex flex-col items-start md:items-center mt-1 md:mt-6">
-                                    <h4 class="font-bold text-slate-800 text-lg mb-1">3. 학생 할인 구매</h4>
-                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">학생은 전용 링크에서<br
+                                    <h4 class="font-bold text-slate-800 text-base lg:text-lg mb-1">3. 학생 할인 구매</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep leading-relaxed">학생은 전용 링크에서<br
                                             class="hidden md:block" />쿠폰 등록 후 구매</p>
                                 </div>
                             </div>
@@ -853,8 +853,8 @@
                                     <iconify-icon icon="lucide:bar-chart-3" width="24"></iconify-icon>
                                 </div>
                                 <div class="flex flex-col items-start md:items-center mt-1 md:mt-6 w-full">
-                                    <h4 class="font-bold text-slate-800 text-lg mb-1">4. 디지털 교재 이용</h4>
-                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep">해설 영상·문제·AI 튜터 등<br
+                                    <h4 class="font-bold text-slate-800 text-base lg:text-lg mb-1">4. 디지털 교재 이용</h4>
+                                    <p class="text-sm font-bold text-slate-600 text-left md:text-center break-keep leading-relaxed">해설 영상·문제·AI 튜터 등<br
                                             class="hidden md:block" />부가서비스 함께 활용</p>
                                 </div>
                             </div>
@@ -864,16 +864,16 @@
 
                     <!-- 강의 활용 문의 메시지 박스 -->
                     <div
-                        class="bg-[#eef2ff] rounded-2xl p-6 md:p-8 border border-indigo-100 w-full flex flex-col md:flex-row items-start md:items-center gap-6 mt-4">
+                        class="bg-indigo-50 rounded-2xl p-6 md:p-8 border border-indigo-100 w-full flex flex-col md:flex-row items-start gap-6 mt-4">
                         <div class="p-4 bg-white rounded-2xl shadow-sm text-indigo-600 shrink-0">
                             <iconify-icon icon="lucide:clipboard-list" width="36"></iconify-icon>
                         </div>
                         <div class="flex-1 min-w-0 w-full">
-                            <h4 class="text-lg md:text-xl font-bold text-slate-800 mb-2">채택 강좌 전용 혜택으로 운영합니다</h4>
-                            <div class="text-slate-700 font-bold text-sm md:text-base leading-relaxed break-words space-y-1.5">
-                                <p>채택 강좌에는 교수님께 전용 구매 링크와 쿠폰코드를 제공합니다.</p>
-                                <p>학생은 링크 접속 후 쿠폰을 등록해 디지털교재를 20~30% 할인 구매할 수 있습니다.</p>
-                                <p>해설 영상, 추가 연습문제, AI 튜터 등 부가서비스까지 함께 이용할 수 있습니다.</p>
+                            <h4 class="text-lg md:text-xl font-bold text-slate-800 mb-4">채택 강좌 전용 혜택으로 운영합니다</h4>
+                            <div class="grid gap-3 text-slate-700 font-bold text-sm md:text-base leading-relaxed break-words">
+                                <p class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0"></span><span>교수님께 구매 전용 링크와 쿠폰코드를 제공합니다.</span></p>
+                                <p class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0"></span><span>학생은 쿠폰 등록 후 디지털교재를 20~30% 할인 구매합니다.</span></p>
+                                <p class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0"></span><span>해설 영상, 추가 연습문제, AI 튜터까지 함께 이용할 수 있습니다.</span></p>
                                 <p class="pt-1">문의: <strong
                                         class="text-slate-900 font-extrabold underline decoration-indigo-300 underline-offset-4">디지털
                                         콘텐츠팀(<a href="mailto:aca_dc_conversion_tf@hanbit.co.kr"
