@@ -753,6 +753,7 @@
                     <!-- 상단 가로 탭 (최적화 레이아웃) -->
                     <div class="relative z-10 w-full max-w-5xl mx-auto mb-10">
                         <div
+                            id="feature-tabs-track"
                             class="flex overflow-x-auto gap-4 pb-6 snap-x hide-scrollbar justify-start md:justify-center items-center px-16">
 
                             <!-- 탭 1 -->
@@ -1173,6 +1174,19 @@
             if (autoPlayInterval) clearInterval(autoPlayInterval);
         }
 
+        function centerActiveFeatureTab(activeTab) {
+            const tabsTrack = document.getElementById('feature-tabs-track');
+            if (!tabsTrack || !activeTab) return;
+
+            const trackRect = tabsTrack.getBoundingClientRect();
+            const activeRect = activeTab.getBoundingClientRect();
+            const targetScrollLeft = tabsTrack.scrollLeft + activeRect.left - trackRect.left - (tabsTrack.clientWidth - activeRect.width) / 2;
+            tabsTrack.scrollTo({
+                left: Math.max(0, targetScrollLeft),
+                behavior: 'smooth'
+            });
+        }
+
         function changeFeature(index, isManual) {
             currentFeatureIndex = index;
 
@@ -1208,6 +1222,8 @@
                     titleText.classList.add('text-slate-500');
                 }
             });
+
+            centerActiveFeatureTab(document.getElementById(`tab-${index}`));
 
             if (isManual) {
                 startAutoPlay();
