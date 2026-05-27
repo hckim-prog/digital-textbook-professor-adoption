@@ -1364,7 +1364,8 @@ ${guidancePageUrl}
         }
 
         function buildMailtoUrl() {
-            return `mailto:?subject=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(gmailBody)}`;
+            const mobileMailBody = gmailBody.replace(/\n/g, '\r\n');
+            return `mailto:?subject=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(mobileMailBody)}`;
         }
 
         function isMobileEnvironment() {
