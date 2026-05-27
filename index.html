@@ -1010,82 +1010,6 @@
             </div>
         </section>
 
-        <!-- 교수님께 안내 메일 보내기 -->
-        <section class="mb-16 print-break-inside-avoid scroll-mt-20">
-            <div
-                class="rounded-[2rem] bg-white border border-slate-200 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr]">
-                <div
-                    class="bg-slate-900 text-white p-8 md:p-10 flex flex-col justify-between gap-8 relative overflow-hidden">
-                    <div
-                        class="absolute -right-16 -top-16 w-48 h-48 rounded-full border border-orange-300/20 bg-orange-400/10">
-                    </div>
-                    <div class="relative z-10">
-                        <div
-                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-400/15 text-orange-200 text-xs font-bold mb-5">
-                            <iconify-icon icon="lucide:send" width="16"></iconify-icon>
-                            영업 현장용 공유
-                        </div>
-                        <h2 class="text-2xl md:text-3xl font-bold tracking-tight leading-tight mb-4">
-                            교수님께 안내 메일 보내기
-                        </h2>
-                        <p class="text-slate-300 text-base leading-relaxed">
-                            상담 후 교수님께 안내 페이지를 바로 공유할 수 있도록 Gmail 작성창을 준비합니다. 발송 전 내용은 영업자가 직접 확인합니다.
-                        </p>
-                    </div>
-                    <div class="relative z-10 flex items-center gap-3 text-sm text-slate-300">
-                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-orange-200">
-                            <iconify-icon icon="lucide:shield-check" width="21"></iconify-icon>
-                        </div>
-                        <p>BCC, 추적 링크, 발송 이력 저장 없이 Gmail 작성창만 엽니다.</p>
-                    </div>
-                </div>
-
-                <form id="gmail-share-form" class="p-6 md:p-8 lg:p-10" novalidate>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="md:col-span-2">
-                            <label for="professor-email" class="block text-sm font-bold text-slate-800 mb-2">
-                                교수님 이메일 주소 <span class="text-orange-500">*</span>
-                            </label>
-                            <input id="professor-email" name="professor-email" type="email" required
-                                autocomplete="email" placeholder="professor@example.ac.kr"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-800 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
-                            <p id="gmail-email-error" class="mt-2 hidden text-sm font-semibold text-red-600">
-                                올바른 이메일 주소를 입력해 주세요.
-                            </p>
-                        </div>
-
-                        <div>
-                            <label for="professor-name" class="block text-sm font-bold text-slate-800 mb-2">
-                                교수님 성함
-                            </label>
-                            <input id="professor-name" name="professor-name" type="text" autocomplete="name"
-                                placeholder="예: 김한빛"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-800 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
-                        </div>
-
-                        <div>
-                            <label for="review-book-title" class="block text-sm font-bold text-slate-800 mb-2">
-                                검토 교재명
-                            </label>
-                            <input id="review-book-title" name="review-book-title" type="text"
-                                placeholder="예: 데이터베이스 개론"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-800 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
-                        </div>
-                    </div>
-
-                    <button type="submit"
-                        class="mt-6 inline-flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200">
-                        <iconify-icon icon="lucide:mail-plus" width="21"></iconify-icon>
-                        Gmail로 안내 메일 열기
-                    </button>
-
-                    <p class="mt-3 text-sm text-slate-500 leading-relaxed">
-                        교수님 이메일을 입력하면 Gmail 작성창이 열립니다. 내용을 확인한 뒤 보내기 버튼을 눌러 주세요.
-                    </p>
-                </form>
-            </div>
-        </section>
-
         <!-- FAQ 섹션 -->
         <section class="mb-16 print-break-inside-avoid scroll-mt-20">
             <div class="flex items-center gap-3 mb-6">
@@ -1255,7 +1179,12 @@
             <h3 class="text-lg font-extrabold mb-5 text-white">한빛아카데미 영업팀</h3>
             <p class="text-blue-200 text-sm mb-3 leading-relaxed">강의 채택 검토나 학생 구매 안내가 필요하시면 문의해 주세요.</p>
             <p class="text-blue-200 text-sm mb-5 leading-relaxed">교재명, 강좌명, 예상 수강 인원을 함께 보내주시면 더 빠르게 안내해 드립니다.</p>
-            <div class="flex flex-col items-center gap-2 mb-8 text-sm">
+            <button type="button" id="gmail-share-button"
+                class="inline-flex items-center justify-center gap-2 rounded-full border border-orange-300/40 bg-orange-400/10 px-4 py-2 text-sm font-bold text-orange-100 transition hover:bg-orange-400/20 hover:text-white focus:outline-none focus:ring-4 focus:ring-orange-300/20">
+                <iconify-icon icon="lucide:mail-plus" width="18"></iconify-icon>
+                메일로 공유하기
+            </button>
+            <div class="mt-5 flex flex-col items-center gap-2 mb-8 text-sm">
                 <a href="mailto:hbacademy@hanbit.co.kr" class="text-slate-400 transition hover:text-blue-200">
                     hbacademy@hanbit.co.kr
                 </a>
@@ -1389,27 +1318,12 @@
             }
         }
 
-        const gmailShareForm = document.getElementById('gmail-share-form');
-        const professorEmailInput = document.getElementById('professor-email');
-        const professorNameInput = document.getElementById('professor-name');
-        const reviewBookTitleInput = document.getElementById('review-book-title');
-        const gmailEmailError = document.getElementById('gmail-email-error');
+        const gmailShareButton = document.getElementById('gmail-share-button');
         const guidancePageUrl = 'https://digital-textbook-professor-adoption.vercel.app/';
         const gmailSubject = '한빛+ 디지털 교재 안내 페이지 공유드립니다';
+        const gmailBody = `교수님 안녕하세요.
 
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function buildGmailBody(professorName, reviewBookTitle) {
-            const greeting = professorName ? `${professorName} 교수님 안녕하세요.` : '교수님 안녕하세요.';
-            const intro = reviewBookTitle
-                ? `오늘 안내드린 ${reviewBookTitle} 관련 한빛+ 디지털 교재 안내 페이지를 공유드립니다.`
-                : '오늘 안내드린 한빛+ 디지털 교재 안내 페이지를 공유드립니다.';
-
-            return `${greeting}
-
-${intro}
+오늘 안내드린 한빛+ 디지털 교재 안내 페이지를 공유드립니다.
 
 한빛+ 디지털 교재는 전자책 본문과 강의교안, 쉬운해설, 해설영상, 추가연습문제 등을 함께 활용할 수 있도록 구성한 교수 채택형 디지털 교재입니다.
 
@@ -1426,48 +1340,14 @@ ${guidancePageUrl}
 
 감사합니다.
 한빛아카데미`;
+
+        function buildGmailUrl() {
+            return `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(gmailBody)}`;
         }
 
-        function buildGmailUrl(professorEmail, professorName, reviewBookTitle) {
-            const body = buildGmailBody(professorName, reviewBookTitle);
-            return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(professorEmail)}&su=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(body)}`;
-        }
-
-        function showEmailError() {
-            professorEmailInput.setAttribute('aria-invalid', 'true');
-            professorEmailInput.classList.add('border-red-300', 'focus:border-red-400', 'focus:ring-red-100');
-            gmailEmailError.classList.remove('hidden');
-        }
-
-        function clearEmailError() {
-            professorEmailInput.removeAttribute('aria-invalid');
-            professorEmailInput.classList.remove('border-red-300', 'focus:border-red-400', 'focus:ring-red-100');
-            gmailEmailError.classList.add('hidden');
-        }
-
-        gmailShareForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const professorEmail = professorEmailInput.value.trim();
-            const professorName = professorNameInput.value.trim();
-            const reviewBookTitle = reviewBookTitleInput.value.trim();
-
-            if (!isValidEmail(professorEmail)) {
-                showEmailError();
-                professorEmailInput.focus();
-                return;
-            }
-
-            clearEmailError();
-
-            const gmailUrl = buildGmailUrl(professorEmail, professorName, reviewBookTitle);
+        gmailShareButton.addEventListener('click', () => {
+            const gmailUrl = buildGmailUrl();
             window.open(gmailUrl, '_blank');
-        });
-
-        professorEmailInput.addEventListener('input', () => {
-            if (professorEmailInput.getAttribute('aria-invalid') === 'true') {
-                clearEmailError();
-            }
         });
 
         window.onload = () => {
