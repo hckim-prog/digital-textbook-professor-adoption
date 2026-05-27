@@ -1179,11 +1179,26 @@
             <h3 class="text-lg font-extrabold mb-5 text-white">한빛아카데미 영업팀</h3>
             <p class="text-blue-200 text-sm mb-3 leading-relaxed">강의 채택 검토나 학생 구매 안내가 필요하시면 문의해 주세요.</p>
             <p class="text-blue-200 text-sm mb-5 leading-relaxed">교재명, 강좌명, 예상 수강 인원을 함께 보내주시면 더 빠르게 안내해 드립니다.</p>
-            <button type="button" id="gmail-share-button"
-                class="inline-flex items-center justify-center gap-2 rounded-full border border-orange-300/40 bg-orange-400/10 px-4 py-2 text-sm font-bold text-orange-100 transition hover:bg-orange-400/20 hover:text-white focus:outline-none focus:ring-4 focus:ring-orange-300/20">
-                <iconify-icon icon="lucide:mail-plus" width="18"></iconify-icon>
-                메일로 공유하기
-            </button>
+            <div class="flex flex-col items-center gap-2">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
+                    <button type="button" id="gmail-share-button"
+                        class="inline-flex items-center justify-center gap-2 rounded-full border border-orange-300/40 bg-orange-400/10 px-4 py-2 text-sm font-bold text-orange-100 transition hover:bg-orange-400/20 hover:text-white focus:outline-none focus:ring-4 focus:ring-orange-300/20">
+                        <iconify-icon icon="lucide:mail-plus" width="18"></iconify-icon>
+                        메일로 공유하기
+                    </button>
+                    <button type="button" id="copy-guidance-link-button"
+                        class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-500/70 bg-white/5 px-4 py-2 text-sm font-bold text-slate-200 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-slate-400/20">
+                        <iconify-icon icon="lucide:copy" width="17"></iconify-icon>
+                        링크 복사
+                    </button>
+                </div>
+                <p class="max-w-md text-xs leading-relaxed text-slate-400">
+                    모바일에서 메일 앱이 열리지 않으면, 안내 링크를 복사해 교수님께 직접 전달해 주세요.
+                </p>
+                <p id="copy-guidance-link-status" class="hidden text-xs font-bold text-orange-100" aria-live="polite">
+                    링크가 복사되었습니다.
+                </p>
+            </div>
             <div class="mt-5 flex flex-col items-center gap-2 mb-8 text-sm">
                 <a href="mailto:hbacademy@hanbit.co.kr" class="text-slate-400 transition hover:text-blue-200">
                     hbacademy@hanbit.co.kr
@@ -1319,6 +1334,8 @@
         }
 
         const gmailShareButton = document.getElementById('gmail-share-button');
+        const copyGuidanceLinkButton = document.getElementById('copy-guidance-link-button');
+        const copyGuidanceLinkStatus = document.getElementById('copy-guidance-link-status');
         const guidancePageUrl = 'https://digital-textbook-professor-adoption.vercel.app/';
         const gmailSubject = '한빛+ 디지털 교재 안내 페이지 공유드립니다';
         const gmailBody = `교수님 안녕하세요.
@@ -1327,8 +1344,9 @@
 
 한빛+ 디지털 교재는 전자책 본문과 강의교안, 쉬운해설, 해설영상, 추가연습문제 등을 함께 활용할 수 있도록 구성한 교수 채택형 디지털 교재입니다.
 
-아래 링크에서 주요 내용을 다시 확인하실 수 있습니다.
+아래 주소에서 주요 내용을 다시 확인하실 수 있습니다.
 
+한빛+ 디지털 교재 안내 페이지
 ${guidancePageUrl}
 
 채택 검토가 필요하시면 아래 정보를 알려주시면 됩니다.
@@ -1345,9 +1363,59 @@ ${guidancePageUrl}
             return `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(gmailBody)}`;
         }
 
+        function buildMailtoUrl() {
+            return `mailto:?subject=${encodeURIComponent(gmailSubject)}&body=${encodeURIComponent(gmailBody)}`;
+        }
+
+        function isMobileEnvironment() {
+            const mobileUserAgent = /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
+            const narrowViewport = window.matchMedia('(max-width: 768px)').matches;
+            return mobileUserAgent || narrowViewport;
+        }
+
+        function showCopySuccess() {
+            copyGuidanceLinkStatus.classList.remove('hidden');
+            window.setTimeout(() => {
+                copyGuidanceLinkStatus.classList.add('hidden');
+            }, 2500);
+        }
+
+        function copyGuidanceLinkWithTextarea() {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = guidancePageUrl;
+            tempInput.setAttribute('readonly', '');
+            tempInput.style.position = 'fixed';
+            tempInput.style.left = '-9999px';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+        }
+
+        async function copyGuidanceLink() {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(guidancePageUrl);
+                } else {
+                    copyGuidanceLinkWithTextarea();
+                }
+            } catch (error) {
+                copyGuidanceLinkWithTextarea();
+            }
+            showCopySuccess();
+        }
+
         gmailShareButton.addEventListener('click', () => {
-            const gmailUrl = buildGmailUrl();
-            window.open(gmailUrl, '_blank');
+            if (isMobileEnvironment()) {
+                window.location.href = buildMailtoUrl();
+                return;
+            }
+
+            window.open(buildGmailUrl(), '_blank');
+        });
+
+        copyGuidanceLinkButton.addEventListener('click', () => {
+            copyGuidanceLink();
         });
 
         window.onload = () => {
