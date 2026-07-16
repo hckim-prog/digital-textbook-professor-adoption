@@ -464,7 +464,7 @@
                         디지털 교재</span>
                 </h1>
                 <p class="text-lg md:text-xl text-slate-600 leading-[1.9] max-w-3xl">
-                    전자책 본문, 강의교안, 쉬운해설, 해설영상, 추가연습문제, <span class="whitespace-nowrap">AI 챗봇을 한 화면에서.</span><br />
+                    전자책 본문, 강의교안, 쉬운해설, 해설영상, 추가연습문제, 용어사전, <span class="whitespace-nowrap">AI 챗봇을 한 화면에서.</span><br />
                     수업 운영과 학생 학습을 함께 돕는<br class="hidden md:block" />
                     <strong class="text-slate-800 font-semibold whitespace-nowrap">교수 채택형 디지털 교재</strong>입니다.<br />
                     <!-- 모바일 최적화를 위해 inline-block을 block으로 변경하여 자동 줄바꿈 허용 -->
@@ -562,7 +562,7 @@
                     </div>
                     <h3 class="text-lg md:text-2xl font-extrabold text-slate-900 mb-3">학습 보조 자료 일괄 제공</h3>
                     <p class="text-sm md:text-base text-slate-700 font-semibold leading-relaxed">
-                        강의교안, 쉬운해설, 해설영상, 추가연습문제, AI 챗봇이 교재에 묶여 있어 별도 파일 배포나 링크 안내 부담을 줄일 수 있습니다.
+                        강의교안, 쉬운해설, 해설영상, 추가연습문제, 용어사전, AI 챗봇이 교재에 묶여 있어 별도 파일 배포나 링크 안내 부담을 줄일 수 있습니다.
                     </p>
                 </div>
 
@@ -718,7 +718,7 @@
                     <span class="text-blue-600">웹과 앱에서 이어지는 통합 학습 환경</span>
                 </h2>
                 <p class="text-lg md:text-xl text-slate-600 leading-[1.8] max-w-3xl mx-auto font-medium break-keep">
-                    자료를 이곳저곳에서 찾지 않아도 됩니다. 본문 읽기부터 강의교안, 쉬운 해설, 해설 영상, <span class="whitespace-nowrap">추가연습문제</span>, AI 튜터까지<br class="hidden md:block" />
+                    자료를 이곳저곳에서 찾지 않아도 됩니다. 본문 읽기부터 강의교안, 쉬운 해설, 해설 영상, <span class="whitespace-nowrap">추가연습문제</span>, 용어사전, AI 튜터까지<br class="hidden md:block" />
                     교수와 학생에게 필요한 자료가 웹 버전과 앱 버전의 디지털 학습 환경 안에서 <strong class="text-slate-800 whitespace-nowrap">자연스럽게 이어집니다.</strong>
                 </p>
             </div>
@@ -788,7 +788,7 @@
                     </div>
                     <div class="text-center">
                         <p class="font-bold text-slate-900 text-2xl mb-1">주요 부가서비스</p>
-                        <p class="text-lg text-slate-500 font-medium tracking-tight">교안·해설·영상·문제·AI 챗봇</p>
+                        <p class="text-lg text-slate-500 font-medium tracking-tight">교안·해설·영상·문제·용어·AI 챗봇</p>
                     </div>
                 </div>
 
@@ -867,7 +867,7 @@
                             <iconify-icon icon="lucide:sparkles"></iconify-icon> 주요 기능
                         </div>
                         <h3 class="text-3xl md:text-4xl font-bold mb-4 leading-tight tracking-tight text-slate-900">
-                            강의교안 중심의 5대 부가서비스
+                            강의교안 중심의 6대 부가서비스
                         </h3>
                         <p class="text-slate-600 text-base">기능을 선택하거나 잠시 기다리면 화면 예시가 바뀝니다.</p>
                     </div>
@@ -947,8 +947,24 @@
 
                             <!-- 탭 5 -->
                             <button onclick="changeFeature(4, true)"
-                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#f5f3ff]/40 hover:bg-[#f5f3ff] border-transparent"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#f0fdfa]/40 hover:bg-[#f0fdfa] border-transparent"
                                 id="tab-4">
+                                <div class="flex items-center gap-3 p-2.5 pr-6">
+                                    <div
+                                        class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-teal-50 text-teal-500">
+                                        <iconify-icon icon="lucide:book-open" width="22"></iconify-icon>
+                                    </div>
+                                    <div class="font-bold text-[15px] feature-title transition-colors text-slate-500">용어사전</div>
+                                </div>
+                                <div class="w-full h-1 bg-teal-50 overflow-hidden text-teal-500">
+                                    <div class="progress-bar-inner"></div>
+                                </div>
+                            </button>
+
+                            <!-- 탭 6 -->
+                            <button onclick="changeFeature(5, true)"
+                                class="feature-tab snap-center flex-shrink-0 flex flex-col gap-0 rounded-2xl transition-all duration-500 border-2 cursor-pointer bg-[#f5f3ff]/40 hover:bg-[#f5f3ff] border-transparent"
+                                id="tab-5">
                                 <div class="flex items-center gap-3 p-2.5 pr-6">
                                     <div
                                         class="feature-icon-bg w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-all duration-300 bg-purple-50 text-purple-500">
@@ -1084,7 +1100,7 @@
                     </label>
                     <div class="faq-content bg-slate-50">
                         <div class="px-6 py-5 border-t border-slate-100 text-slate-600 leading-relaxed">
-                            기존 전자책에 강의교안, 쉬운해설, 해설영상, 추가연습문제, AI 챗봇을 결합한 수업 지원형 교재입니다. 본문 읽기부터 수업 자료 확인과 복습까지 한 화면에서 이어지도록 구성했습니다.
+                            기존 전자책에 강의교안, 쉬운해설, 해설영상, 추가연습문제, 용어사전, AI 챗봇을 결합한 수업 지원형 교재입니다. 본문 읽기부터 수업 자료 확인과 복습까지 한 화면에서 이어지도록 구성했습니다.
                         </div>
                     </div>
                 </div>
@@ -1300,7 +1316,7 @@
                 desc: '학생이 어려운 개념을 스스로 이해하도록 <span class="text-emerald-600 font-bold px-1 rounded bg-emerald-50">본문을 쉽게 풀어 설명</span>합니다.'
             },
             {
-                img: '해설영상.png',
+                img: '해설영상.png?v=82faf167',
                 activeBg: 'bg-white',
                 inactiveBg: 'bg-[#fff1f2]/40',
                 activeBorder: 'border-rose-200',
@@ -1316,6 +1332,15 @@
                 iconBgActive: 'bg-amber-100 text-amber-600',
                 iconBgInactive: 'bg-amber-100/50 text-amber-400',
                 desc: '학생의 반복 학습과 이해도 점검을 돕는 <span class="text-amber-600 font-bold px-1 rounded bg-amber-50">추가 문제 자료</span>입니다.'
+            },
+            {
+                img: '용어사전.png?v=2e921b2c',
+                activeBg: 'bg-white',
+                inactiveBg: 'bg-[#f0fdfa]/40',
+                activeBorder: 'border-teal-200',
+                iconBgActive: 'bg-teal-100 text-teal-600',
+                iconBgInactive: 'bg-teal-100/50 text-teal-400',
+                desc: '교재 본문에 등장하는 낯선 용어를 <span class="text-teal-600 font-bold px-1 rounded bg-teal-50">쉽고 명확하게 풀어 설명</span>합니다.'
             },
             {
                 img: 'AI튜터.png',
@@ -1408,7 +1433,7 @@
 
 오늘 안내드린 한빛+ 디지털 교재 안내 페이지를 공유드립니다.
 
-한빛+ 디지털 교재는 전자책 본문과 강의교안, 쉬운해설, 해설영상, 추가연습문제 등을 함께 활용할 수 있도록 구성한 교수 채택형 디지털 교재입니다.
+한빛+ 디지털 교재는 전자책 본문과 강의교안, 쉬운해설, 해설영상, 추가연습문제, 용어사전 등을 함께 활용할 수 있도록 구성한 교수 채택형 디지털 교재입니다.
 
 아래 주소에서 주요 내용을 다시 확인하실 수 있습니다.
 
